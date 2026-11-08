@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="de" data-repository-url="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Schleuse hält API-Schlüssel auf deinem Server. Ninox, Make und Skripte erhalten nur einen Token für freigegebene Aktionen – mit fertigen Vorlagen für Ninox, HubSpot, WooCommerce, Lexware Office, Claude und mehr.">
+  <meta name="theme-color" content="#14251d">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314251d'/%3E%3Cpath d='M11 7h4L9 25H5zm8-2h4l-8 22h-4zm7 4h3l-6 16h-3z' fill='%23c6f4ad'/%3E%3C/svg%3E">
+  <title>Schleuse – API-Gateway für freigegebene Aktionen</title>
+  <link rel="alternate" hreflang="de" href="https://schleuse.link/">
+  <link rel="alternate" hreflang="en" href="https://schleuse.link/en/">
+  <link rel="alternate" hreflang="x-default" href="https://schleuse.link/">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172a20;
+      --muted: #516459;
+      --pine: #14251d;
+      --green: #246745;
+      --mint: #c6f4ad;
+      --paper: #f5f7f0;
+      --line: #d9e2d7;
+      --mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      scroll-behavior: smooth;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body, h1, h2, h3, p, pre { margin: 0; }
+    body { line-height: 1.55; }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid #63aa77; outline-offset: 4px; }
+    .wrap { width: min(1120px, calc(100% - 64px)); margin-inline: auto; }
+    .skip { position: absolute; top: 0; left: 1rem; z-index: 1; padding: .7rem; background: white; transform: translateY(-120%); }
+    .skip:focus { transform: translateY(0); }
+    .eyebrow { font: 700 .72rem/1.5 var(--mono); letter-spacing: .15em; text-transform: uppercase; }
+    .top { color: #f3faed; background: var(--pine); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: 80px; border-bottom: 1px solid #34463a; }
+    .brand { display: inline-flex; align-items: center; gap: .62rem; font-size: 1.43rem; font-weight: 780; letter-spacing: -.045em; text-decoration: none; }
+    .brand svg { width: 29px; height: 29px; }
+    .nav-links { display: flex; align-items: center; flex-wrap: wrap; gap: 1.75rem; }
+    .nav-links a { color: #d9e5d8; font-size: .87rem; text-decoration: none; }
+    .nav-links a:hover { color: var(--mint); }
+    .nav-links .nav-demo { color: var(--mint); }
+    .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 3.4rem; align-items: center; padding-block: 5.3rem 5.8rem; }
+    .hero .eyebrow { color: #b9d6b5; display: flex; align-items: center; gap: .68rem; }
+    .dot { width: .52rem; height: .52rem; border-radius: 50%; background: currentColor; display: inline-block; }
+    h1 { font-size: clamp(3.3rem, 6vw, 5.35rem); line-height: .99; letter-spacing: -.077em; margin-block: 1.22rem 1.4rem; }
+    h1 span { color: var(--mint); }
+    .hero-copy > p:not(.eyebrow) { color: #c5d5c7; font-size: 1.07rem; max-width: 30rem; }
+    .actions { display: flex; align-items: center; flex-wrap: wrap; gap: .8rem; margin-top: 1.75rem; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; padding: .73rem 1.1rem; border-radius: 8px; border: 1px solid transparent; font-weight: 690; text-decoration: none; cursor: pointer; }
+    .hero-primary { color: #15291b; background: var(--mint); }
+    .hero-primary:hover { background: #d9fac8; }
+    .hero-secondary { color: #edf6ea; border-color: #55705c; }
+    .hero-secondary:hover { border-color: var(--mint); }
+    .art { margin: 0; padding: 1rem; border: 1px solid #3b5342; border-radius: 18px; background: #1a3025; }
+    .art > svg { display: block; width: 100%; height: auto; }
+    .art figcaption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .4rem; border-top: 1px solid #3b5342; padding: .8rem .3rem .05rem; color: #c3d7c2; font: .68rem/1.5 var(--mono); }
+    .art figcaption span:last-child { color: var(--mint); }
+    .strip { background: #e4eee1; border-bottom: 1px solid #d3e0d1; }
+    .strip .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 1.3rem; padding-block: .9rem; }
+    .strip span { font: .73rem/1.5 var(--mono); font-weight: 650; color: #30573e; }
+    section { scroll-margin-top: 1.5rem; }
+    .demo-section { padding-block: 4.7rem 4.8rem; }
+    .intro { max-width: 42rem; margin-bottom: 1.75rem; }
+    .intro .eyebrow, .install .eyebrow { color: var(--green); margin-bottom: .55rem; }
+    h2 { font-size: clamp(2.1rem, 4vw, 3.55rem); line-height: 1.04; letter-spacing: -.06em; }
+    .intro > p:last-child, .install-copy > p:last-of-type { margin-top: .8rem; color: var(--muted); }
+    .demo { display: grid; grid-template-columns: 1fr 1.16fr; gap: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff; }
+    .controls, .output { min-width: 0; padding: 1.55rem; }
+    .controls fieldset { margin: 0; padding: 0; border: 0; }
+    .controls legend { margin-bottom: .78rem; padding: 0; font-weight: 700; }
+    .choice { display: grid; grid-template-columns: 1rem 1fr; align-items: start; gap: .65rem; padding: .78rem .85rem; margin-bottom: .55rem; border: 1px solid var(--line); border-radius: 9px; cursor: pointer; }
+    .choice:has(input:checked) { background: #eff7ec; border-color: #8db79b; }
+    .choice input { accent-color: var(--green); margin: .33rem 0 0; }
+    .choice strong { display: block; font-size: .94rem; }
+    .choice small { display: block; color: var(--muted); font-size: .79rem; }
+    .controls .actions { margin-top: 1rem; }
+    .run { background: var(--green); color: #fff; }
+    .run:hover { background: #1a5438; }
+    .reset { background: #fff; color: var(--ink); border-color: var(--line); }
+    .reset:hover { background: var(--paper); }
+    .output { color: #e1eee1; background: #1c3026; }
+    .output-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .85rem; }
+    .output-bar .eyebrow { color: #bbd1bc; }
+    .status { border-radius: 5px; padding: .23rem .53rem; background: #34493d; color: #ebf5e7; font: .72rem/1.5 var(--mono); }
+    .status[data-state="allowed"] { color: #182b1d; background: var(--mint); }
+    .status[data-state="denied"] { color: #391b12; background: #ffc4a9; }
+    .request { display: block; color: #d1f2c8; font: .79rem/1.5 var(--mono); overflow-wrap: anywhere; }
+    .response { margin-top: .85rem; min-height: 7.3rem; padding: .78rem; border: 1px solid #40584a; border-radius: 8px; background: #14251d; color: #e1eee1; white-space: pre-wrap; overflow-wrap: anywhere; font: .78rem/1.6 var(--mono); }
+    .result-note { min-height: 2.75em; margin-top: .6rem; color: #c2d5c4; font-size: .82rem; }
+    .path { display: flex; flex-wrap: wrap; gap: .45rem .7rem; padding: 0; margin: .8rem 0 0; list-style: none; font: .68rem/1.5 var(--mono); }
+    .path li { display: flex; gap: .7rem; align-items: center; }
+    .path li + li::before { content: "→"; color: #9ab4a1; }
+    .path span { padding: .19rem .42rem; border: 1px solid #597264; border-radius: 5px; }
+    .path [data-state="passed"] { color: var(--mint); border-color: #a0c98e; }
+    .path [data-state="stopped"] { color: #ffc4a9; border-color: #c89a86; }
+    .path [data-state="skipped"] { border-style: dashed; }
+    .details { padding-bottom: 4.45rem; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+    .step { padding: 1.3rem 1.55rem 0 0; }
+    .step + .step { padding-left: 1.55rem; border-left: 1px solid var(--line); }
+    .step .eyebrow { color: var(--green); }
+    .step h3 { font-size: 1.22rem; margin: .35rem 0; letter-spacing: -.025em; }
+    .step p { color: var(--muted); font-size: .93rem; }
+    .install { padding-block: 3.8rem; background: #e4eee1; }
+    .install-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 2rem; }
+    .terminal { background: var(--pine); color: #d3efcf; padding: 1.1rem 1.3rem; border-radius: 12px; font: .83rem/1.8 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+    .terminal .comment { color: #a3bda5; }
+    footer { color: #3f5848; }
+    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .65rem; padding-block: 1.35rem; }
+    .foot small { font-size: .8rem; }
+    .foot-links { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-size: .85rem; }
+    .nav-links .lang { padding: .12rem .45rem; border: 1px solid #55705c; border-radius: 5px; font: 700 .72rem/1.5 var(--mono); letter-spacing: .08em; }
+    @media (max-width: 850px) {
+      .hero { gap: 1.65rem; padding-block: 3.5rem; }
+      .art { padding: .65rem; }
+      .wrap { width: min(1120px, calc(100% - 42px)); }
+    }
+    @media (max-width: 670px) {
+      .wrap { width: calc(100% - 32px); }
+      .nav { min-height: 66px; gap: .6rem; }
+      .nav-links { gap: .75rem; }
+      .nav-links a { font-size: .75rem; }
+      .nav-links .optional-nav { display: none; }
+      .nav-links .lang { order: -1; }
+      .hero, .demo, .install-grid, .steps { grid-template-columns: 1fr; }
+      .hero { padding-block: 2.7rem; }
+      .hero-copy > p:not(.eyebrow) { font-size: 1rem; }
+      .art { max-width: 480px; }
+      .demo-section, .install { padding-block: 2.75rem; }
+      .controls, .output { padding: 1rem; }
+      .details { padding-bottom: 2.75rem; }
+      .step, .step + .step { padding: 1rem 0; border-left: 0; border-bottom: 1px solid var(--line); }
+    }
+    .block { padding-block: 4.6rem; }
+    .band { background: #e9f1e6; border-block: 1px solid #d6e3d3; }
+    .band.dark { background: var(--pine); color: #e6f2e2; border: 0; }
+    .band.dark .intro .eyebrow { color: var(--mint); }
+    .cases { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
+    .case { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.3rem 1.4rem 1.4rem; }
+    .case h3 { font-size: 1.2rem; letter-spacing: -.025em; margin: .9rem 0 .35rem; }
+    .case p { color: var(--muted); font-size: .93rem; }
+    .case code { display: inline-block; margin-top: .75rem; padding: .25rem .55rem; border-radius: 6px; background: #eef5ea; color: #245a3c; font: .74rem/1.5 var(--mono); overflow-wrap: anywhere; }
+    .flow { display: block; width: 100%; height: auto; }
+    .flow .f-box { fill: #f3f7f0; stroke: #c9d8c6; }
+    .flow .f-gate { fill: var(--pine); }
+    .flow .f-line { stroke: #8fb39b; stroke-width: 1.5; stroke-dasharray: 3 4; fill: none; }
+    .flow .f-arrow { stroke: #4f8c63; stroke-width: 1.6; fill: none; }
+    .flow .f-mark { fill: var(--mint); }
+    .flow text { text-anchor: middle; font-family: var(--mono); }
+    .flow .f-title { font-size: 10.5px; font-weight: 700; fill: var(--ink); }
+    .flow .f-sub { font-size: 9px; fill: var(--muted); }
+    .flow .light { fill: #eaf6e4; }
+    .flow .f-sub.light { fill: #a9c7ad; }
+    .flow .f-tag { font-size: 8.5px; fill: #4f8c63; }
+    .shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
+    .shot { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+    .shot img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+    .shot figcaption { padding: 1rem 1.2rem 1.2rem; }
+    .shot figcaption .eyebrow { color: var(--green); margin-bottom: .3rem; }
+    .shot figcaption p:last-child { color: var(--muted); font-size: .92rem; }
+    .cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem 2rem; }
+    .cat .eyebrow { color: var(--green); margin-bottom: .5rem; }
+    .cat ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+    .cat li { display: grid; grid-template-columns: 2.1rem 1fr auto; gap: .75rem; align-items: center; padding: .7rem 0; border-bottom: 1px solid var(--line); }
+    .cat strong { display: block; font-size: .95rem; }
+    .cat small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.4; }
+    .mono-icon { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 8px; background: var(--pine); color: var(--mint); font-weight: 760; }
+    .cat em { font: normal .66rem/1.4 var(--mono); padding: .2rem .45rem; border-radius: 5px; white-space: nowrap; background: #fbefe6; color: #94603e; }
+    .cat em[data-status="getestet"], .cat em[data-status="teilweise"] { background: #e3f3dc; color: #2e6a43; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .feature { border: 1px solid #36513f; border-radius: 14px; padding: 1.2rem 1.3rem; background: #1a3025; }
+    .feature h3 { font-size: 1.05rem; color: #f2faee; }
+    .feature > code { display: block; margin: .6rem 0; color: var(--mint); font: .76rem/1.5 var(--mono); overflow-wrap: anywhere; }
+    .feature p { color: #b9cdbb; font-size: .88rem; }
+    .feature p code { font: .78rem var(--mono); color: #d8f3cd; }
+    .faq details { border-bottom: 1px solid var(--line); padding: 1rem 0; max-width: 52rem; }
+    .faq summary { cursor: pointer; font-weight: 680; font-size: 1.03rem; }
+    .faq details p { color: var(--muted); margin-top: .5rem; }
+    @media (max-width: 850px) { .features { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 670px) {
+      .block { padding-block: 2.8rem; }
+      .cases, .shots, .cats, .features { grid-template-columns: 1fr; }
+      .cat li { grid-template-columns: 2.1rem 1fr; }
+      .cat em { grid-column: 2; justify-self: start; }
+    }
+    @media (prefers-reduced-motion: reduce) { :root { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#inhalt">Zum Inhalt</a>
+  <header class="top" id="start">
+    <nav class="wrap nav" aria-label="Hauptnavigation">
+      <a class="brand" href="#start" aria-label="Schleuse, Startseite">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M11 6h5L9 26H4zm10-3h5l-9 26h-5zm6 6h4l-6 17h-4z" fill="#c6f4ad"/></svg>
+        schleuse
+      </a>
+      <div class="nav-links">
+        <a class="optional-nav" href="#einsatz">Einsatz</a>
+        <a class="optional-nav" href="#vorlagen">Vorlagen</a>
+        <a href="#einrichtung">Einrichtung</a>
+        <a href="#installation">Installation</a>
+        <a class="nav-demo" href="#demo">Demo ausprobieren <span aria-hidden="true">↗</span></a>
+        <a class="optional-nav" data-repo-link hidden>GitHub <span aria-hidden="true">↗</span></a>
+        <a class="lang" href="en/" hreflang="en" lang="en" aria-label="English version">EN</a>
+      </div>
+    </nav>
+    <div class="wrap hero" id="inhalt">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Selbst gehostetes API-Gateway</p>
+        <h1>API-Zugriffe.<br><span>Klar geregelt.</span></h1>
+        <p>Ninox, Make oder dein Skript bekommen nur einen Token für freigegebene Aktionen. Die echten API-Schlüssel für KI, Shop, CRM oder Buchhaltung bleiben auf deinem Server. Eingerichtet wird alles in der Admin-Oberfläche.</p>
+        <div class="actions">
+          <a class="button hero-primary" href="#einsatz">Beispiele ansehen <span aria-hidden="true">↓</span></a>
+          <a class="button hero-secondary" href="#demo">Demo ausprobieren</a>
+        </div>
+      </div>
+      <figure class="art">
+        <svg viewBox="0 0 480 318" role="img" aria-labelledby="diagram-title">
+          <title id="diagram-title">Schleuse prüft die Freigabe zwischen Client und Anbieter-API</title>
+          <defs>
+            <pattern id="dot-grid" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#52705c"/></pattern>
+          </defs>
+          <rect x="0" y="0" width="480" height="318" rx="10" fill="url(#dot-grid)" opacity=".63"/>
+          <g fill="none" stroke="#719682" stroke-width="1">
+            <circle cx="240" cy="152" r="91" stroke-dasharray="2 7"/>
+            <circle cx="240" cy="152" r="69"/>
+            <path d="M110 152h64m132 0h64M240 34v48m0 140v48"/>
+          </g>
+          <path d="M122 152h40m156 0h40" stroke="#c6f4ad" stroke-width="2" stroke-dasharray="3 5"/>
+          <g fill="#1b3025" stroke="#658473">
+            <rect x="13" y="120" width="104" height="64" rx="8"/>
+            <rect x="363" y="120" width="104" height="64" rx="8"/>
+            <rect x="174" y="95" width="132" height="114" rx="18" fill="#284735" stroke="#a8ce9f"/>
+            <rect x="171" y="261" width="138" height="32" rx="6"/>
+          </g>
+          <g fill="#c6f4ad">
+            <circle cx="149" cy="152" r="4"/><circle cx="331" cy="152" r="4"/>
+            <path d="M233 113h6l-9 27h-6zm11-3h6l-11 33h-6zm8 7h5l-8 23h-5z"/>
+          </g>
+          <g text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#bed1c0">
+            <text x="65" y="145" fill="#eff8eb">CLIENT</text><text x="65" y="163">Anfrage</text>
+            <text x="415" y="145" fill="#eff8eb">ANBIETER</text><text x="415" y="163">Ziel-API</text>
+            <text x="240" y="167" font-size="15" font-weight="700" fill="#eff8eb">SCHLEUSE</text>
+            <text x="240" y="186">Freigabe prüfen</text>
+            <text x="240" y="280">Schlüssel am Server</text>
+            <text x="240" y="22" font-size="10">KONTROLLIERTER API-ZUGRIFF</text>
+          </g>
+        </svg>
+        <figcaption><span>CLIENT → GATEWAY → ANBIETER</span><span><span class="dot" aria-hidden="true"></span> Freigabe erforderlich</span></figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <div class="strip"><div class="wrap"><span>18 Konnektor-Vorlagen</span><span>Tokens bis zum Widerruf</span><span>Body-Vorlagen &amp; Parameter</span><span>Schlüssel AES-verschlüsselt</span><span>Open Source · GPL v3</span></div></div>
+
+  <main>
+    <section class="wrap block" id="einsatz" aria-labelledby="einsatz-heading">
+      <div class="intro">
+        <p class="eyebrow">Einsatz</p>
+        <h2 id="einsatz-heading">Was du damit machen kannst.</h2>
+        <p>Überall dort, wo ein Low-Code-Werkzeug oder Skript eine API braucht, deren Schlüssel nicht beim Kunden liegen soll.</p>
+      </div>
+      <div class="cases">
+        <article class="case">
+          <svg class="flow" viewBox="0 0 340 96" role="img" aria-label="Ninox über Schleuse zu Claude oder OpenAI">
+            <rect x="2" y="18" width="92" height="58" rx="9" class="f-box"/><rect x="124" y="10" width="92" height="74" rx="13" class="f-gate"/><rect x="246" y="18" width="92" height="58" rx="9" class="f-box"/>
+            <path d="M96 47h24m100 0h24" class="f-line"/><path d="M114 42l6 5-6 5M238 42l6 5-6 5" class="f-arrow"/>
+            <text x="48" y="44" class="f-title">Ninox</text><text x="48" y="60" class="f-sub">Button</text>
+            <path d="M162 26h5l-7 21h-5zm9-2h5l-9 26h-5zm7 6h4l-6 17h-4z" class="f-mark"/>
+            <text x="170" y="64" class="f-title light">Schleuse</text><text x="170" y="77" class="f-sub light">prüft &amp; ergänzt</text>
+            <text x="292" y="44" class="f-title">Claude</text><text x="292" y="60" class="f-sub">oder OpenAI</text>
+            <text x="108" y="94" class="f-tag">Token</text><text x="232" y="94" class="f-tag">API-Schlüssel</text>
+          </svg>
+          <h3>KI direkt aus Ninox</h3><p>Ein Button formuliert Mahnungen, Antworten oder Zusammenfassungen. Der KI-Schlüssel steht nie im Ninox-Skript – Ninox kennt nur den Schleuse-Token.</p><code>POST /actions/claude-text</code>
+        </article>
+        <article class="case">
+          <svg class="flow" viewBox="0 0 340 96" role="img" aria-label="Make über Schleuse zu Ninox">
+            <rect x="2" y="18" width="92" height="58" rx="9" class="f-box"/><rect x="124" y="10" width="92" height="74" rx="13" class="f-gate"/><rect x="246" y="18" width="92" height="58" rx="9" class="f-box"/>
+            <path d="M96 47h24m100 0h24" class="f-line"/><path d="M114 42l6 5-6 5M238 42l6 5-6 5" class="f-arrow"/>
+            <text x="48" y="44" class="f-title">Make</text><text x="48" y="60" class="f-sub">Szenario</text>
+            <path d="M162 26h5l-7 21h-5zm9-2h5l-9 26h-5zm7 6h4l-6 17h-4z" class="f-mark"/>
+            <text x="170" y="64" class="f-title light">Schleuse</text><text x="170" y="77" class="f-sub light">prüft &amp; ergänzt</text>
+            <text x="292" y="44" class="f-title">Ninox</text><text x="292" y="60" class="f-sub">Datenbank</text>
+            <text x="108" y="94" class="f-tag">Token</text><text x="232" y="94" class="f-tag">API-Schlüssel</text>
+          </svg>
+          <h3>Make liest und schreibt Ninox</h3><p>Make holt Datensätze oder legt neue an. Der Ninox-API-Schlüssel öffnet alle Datenbanken – er bleibt in Schleuse, Make bekommt nur die freigegebenen Aktionen.</p><code>GET /actions/ninox-datensatz?id=12</code>
+        </article>
+        <article class="case">
+          <svg class="flow" viewBox="0 0 340 96" role="img" aria-label="Ninox über Schleuse zu WooCommerce">
+            <rect x="2" y="18" width="92" height="58" rx="9" class="f-box"/><rect x="124" y="10" width="92" height="74" rx="13" class="f-gate"/><rect x="246" y="18" width="92" height="58" rx="9" class="f-box"/>
+            <path d="M96 47h24m100 0h24" class="f-line"/><path d="M114 42l6 5-6 5M238 42l6 5-6 5" class="f-arrow"/>
+            <text x="48" y="44" class="f-title">Ninox</text><text x="48" y="60" class="f-sub">Bestellungen</text>
+            <path d="M162 26h5l-7 21h-5zm9-2h5l-9 26h-5zm7 6h4l-6 17h-4z" class="f-mark"/>
+            <text x="170" y="64" class="f-title light">Schleuse</text><text x="170" y="77" class="f-sub light">prüft &amp; ergänzt</text>
+            <text x="292" y="44" class="f-title">WooCommerce</text><text x="292" y="60" class="f-sub">Shopify</text>
+            <text x="108" y="94" class="f-tag">Token</text><text x="232" y="94" class="f-tag">API-Schlüssel</text>
+          </svg>
+          <h3>Shop-Daten im Backoffice</h3><p>Bestellungen und Produkte aus dem Shop lesen, Bestellstatus aus Ninox heraus ändern. Feste GraphQL-Abfragen für Shopify.</p><code>PUT /actions/woo-status?id=815</code>
+        </article>
+        <article class="case">
+          <svg class="flow" viewBox="0 0 340 96" role="img" aria-label="Ninox über Schleuse zu HubSpot">
+            <rect x="2" y="18" width="92" height="58" rx="9" class="f-box"/><rect x="124" y="10" width="92" height="74" rx="13" class="f-gate"/><rect x="246" y="18" width="92" height="58" rx="9" class="f-box"/>
+            <path d="M96 47h24m100 0h24" class="f-line"/><path d="M114 42l6 5-6 5M238 42l6 5-6 5" class="f-arrow"/>
+            <text x="48" y="44" class="f-title">Ninox</text><text x="48" y="60" class="f-sub">Kunden</text>
+            <path d="M162 26h5l-7 21h-5zm9-2h5l-9 26h-5zm7 6h4l-6 17h-4z" class="f-mark"/>
+            <text x="170" y="64" class="f-title light">Schleuse</text><text x="170" y="77" class="f-sub light">prüft &amp; ergänzt</text>
+            <text x="292" y="44" class="f-title">HubSpot</text><text x="292" y="60" class="f-sub">Lexware Office</text>
+            <text x="108" y="94" class="f-tag">Token</text><text x="232" y="94" class="f-tag">API-Schlüssel</text>
+          </svg>
+          <h3>CRM und Buchhaltung</h3><p>Kontakte in HubSpot oder Pipedrive suchen und anlegen, offene Rechnungen aus Lexware Office oder sevDesk lesen.</p><code>POST /actions/hubspot-suchen</code>
+        </article>
+      </div>
+    </section>
+
+    <section class="band" id="einrichtung" aria-labelledby="einrichtung-heading">
+      <div class="wrap block">
+        <div class="intro">
+          <p class="eyebrow">Einrichtung in der Oberfläche</p>
+          <h2 id="einrichtung-heading">Vier Schritte. Kein Terminal.</h2>
+          <p>So sieht die Admin-Oberfläche aus. Alle Beispiele zeigen Testdaten.</p>
+        </div>
+        <div class="shots">
+        <figure class="shot"><img src="img/vorlagen.jpg" width="800" height="500" loading="lazy" alt="Screenshot: Vorlage wählen in der Schleuse-Verwaltung"><figcaption><p class="eyebrow">01 · Vorlage wählen</p><p>Anbieter aussuchen, Kunde und IDs eintragen, Schlüssel einmal hinterlegen. Passende Aktionen sind vorbereitet.</p></figcaption></figure>
+        <figure class="shot"><img src="img/aktion-testen.jpg" width="800" height="500" loading="lazy" alt="Screenshot: Aktion testen in der Schleuse-Verwaltung"><figcaption><p class="eyebrow">02 · Aktion testen</p><p>Ein Klick ruft die echte Ziel-API auf. Die Vorschau zeigt sofort, welche Daten zurückkommen.</p></figcaption></figure>
+        <figure class="shot"><img src="img/api-token.jpg" width="800" height="500" loading="lazy" alt="Screenshot: Token erstellen in der Schleuse-Verwaltung"><figcaption><p class="eyebrow">03 · Token erstellen</p><p>Aktionen eines Kunden auswählen. Standard: unbegrenzt bis zum Widerruf – kein Login alle 15 Minuten.</p></figcaption></figure>
+        <figure class="shot"><img src="img/ninox-vorlage.jpg" width="800" height="500" loading="lazy" alt="Screenshot: In Ninox einfügen in der Schleuse-Verwaltung"><figcaption><p class="eyebrow">04 · In Ninox einfügen</p><p>Fertiges Skript für Ninox, Einstellungen für Make oder ein curl-Befehl – kopieren, Werte eintragen, fertig.</p></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap block" id="vorlagen" aria-labelledby="vorlagen-heading">
+      <div class="intro">
+        <p class="eyebrow">Konnektor-Vorlagen</p>
+        <h2 id="vorlagen-heading">Häufige B2B-Systeme. Vorbereitet.</h2>
+        <p>Zieladresse, Anmeldung und typische Aktionen sind eingetragen. Eigene APIs legst du genauso an. „Nach Anbieter-Doku“ heißt: nach offizieller Dokumentation erstellt, noch nicht mit einem echten Konto geprüft.</p>
+      </div>
+      <div class="cats">
+          <div class="cat"><p class="eyebrow">Zum Ausprobieren</p><ul><li><span class="mono-icon" aria-hidden="true">W</span><span><strong>WordPress.org (Testquelle)</strong><small>Öffentliche News-API von WordPress.org. Ideal für den ersten Test ohne eigenes Konto.</small></span><em data-status="getestet">getestet</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">Datenbank &amp; Low-Code</p><ul><li><span class="mono-icon" aria-hidden="true">N</span><span><strong>Ninox</strong><small>Datensätze in Ninox Cloud oder Ninox On-Premise lesen, anlegen und ändern.</small></span><em data-status="getestet">getestet</em></li><li><span class="mono-icon" aria-hidden="true">A</span><span><strong>Airtable</strong><small>Datensätze einer Airtable-Base lesen und anlegen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li><li><span class="mono-icon" aria-hidden="true">N</span><span><strong>Notion</strong><small>Notion-Datenbanken abfragen und Einträge anlegen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">Automatisierung</p><ul><li><span class="mono-icon" aria-hidden="true">M</span><span><strong>Make (Webhook)</strong><small>Daten aus Ninox oder einem Skript an ein Make-Szenario senden. Der Webhook bleibt mit einem API-Schlüssel geschützt.</small></span><em data-status="doku">nach Anbieter-Doku</em></li><li><span class="mono-icon" aria-hidden="true">n</span><span><strong>n8n (Webhook)</strong><small>Daten an einen n8n-Workflow senden. Geschützt per Header-Authentifizierung.</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">CRM &amp; Vertrieb</p><ul><li><span class="mono-icon" aria-hidden="true">H</span><span><strong>HubSpot CRM</strong><small>Kontakte lesen, suchen und anlegen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li><li><span class="mono-icon" aria-hidden="true">P</span><span><strong>Pipedrive</strong><small>Personen und Deals lesen, Personen suchen und anlegen (API v2).</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">Buchhaltung &amp; Rechnungen</p><ul><li><span class="mono-icon" aria-hidden="true">L</span><span><strong>Lexware Office (lexoffice)</strong><small>Kontakte, offene Rechnungen und Belege lesen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li><li><span class="mono-icon" aria-hidden="true">s</span><span><strong>sevDesk</strong><small>Kontakte und Rechnungen lesen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">Shop &amp; Website</p><ul><li><span class="mono-icon" aria-hidden="true">W</span><span><strong>WooCommerce</strong><small>Bestellungen und Produkte lesen, Bestellstatus ändern.</small></span><em data-status="doku">nach Anbieter-Doku</em></li><li><span class="mono-icon" aria-hidden="true">S</span><span><strong>Shopify</strong><small>Bestellungen und Produkte über feste GraphQL-Abfragen lesen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li><li><span class="mono-icon" aria-hidden="true">W</span><span><strong>WordPress (eigene Website)</strong><small>Beiträge der eigenen Website lesen und Entwürfe anlegen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">Zahlungen</p><ul><li><span class="mono-icon" aria-hidden="true">S</span><span><strong>Stripe</strong><small>Kunden und Kontostand lesen, Kunden anlegen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">Kommunikation</p><ul><li><span class="mono-icon" aria-hidden="true">S</span><span><strong>Slack</strong><small>Nachrichten in einen festen Kanal senden.</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">Entwicklung</p><ul><li><span class="mono-icon" aria-hidden="true">G</span><span><strong>GitHub</strong><small>Repository-Daten und Issues lesen, Issues anlegen.</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+          <div class="cat"><p class="eyebrow">KI</p><ul><li><span class="mono-icon" aria-hidden="true">C</span><span><strong>Claude (Anthropic)</strong><small>Texte mit Claude erzeugen, ohne dass der API-Schlüssel im Client steht.</small></span><em data-status="doku">nach Anbieter-Doku</em></li><li><span class="mono-icon" aria-hidden="true">O</span><span><strong>OpenAI</strong><small>Texte mit einem OpenAI-Modell erzeugen, ohne dass der API-Schlüssel im Client steht.</small></span><em data-status="doku">nach Anbieter-Doku</em></li></ul></div>
+      </div>
+    </section>
+
+    <section class="band dark" aria-labelledby="funktionen-heading">
+      <div class="wrap block">
+        <div class="intro">
+          <p class="eyebrow">Was eine Aktion kann</p>
+          <h2 id="funktionen-heading">Genau so viel wie nötig.</h2>
+        </div>
+        <div class="features">
+        <article class="feature"><h3>Platzhalter im Pfad</h3><code>/orders/{id}</code><p>Der Client übergibt <code>?id=815</code>. Nur URL-sichere Werte, kein Pfadwechsel.</p></article>
+        <article class="feature"><h3>Freigegebene Parameter</h3><code>page, search</code><p>Für Seiten und Filter. Feste Werte wie <code>?status=publish</code> kann der Client nicht ändern.</p></article>
+        <article class="feature"><h3>Body-Vorlagen</h3><code>{&quot;properties&quot;: {&quot;email&quot;: &quot;{{email}}&quot;}}</code><p>Die Struktur bleibt in Schleuse, der Client liefert nur die Werte. Ideal für Ninox, GraphQL und KI.</p></article>
+        <article class="feature"><h3>Anmeldearten</h3><code>Bearer · Basic · x-api-key</code><p>Schlüssel im Header, Benutzername und Passwort oder öffentliche APIs. Dazu feste Zusatz-Header.</p></article>
+        <article class="feature"><h3>Kurze Wege</h3><code>200 · 400 · 401 · 403</code><p>Klare Fehlermeldungen mit Namen des fehlenden Werts. Die Diagnose zeigt Status, Quelle und Dauer.</p></article>
+        <article class="feature"><h3>Schutz eingebaut</h3><code>AES-GCM · CSRF · Limits</code><p>Schlüssel verschlüsselt, keine Redirects, interne Netze gesperrt, 60 Aufrufe pro Minute und Token.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap demo-section" id="demo" aria-labelledby="demo-heading">
+      <div class="intro">
+        <p class="eyebrow">Interaktive Demo · Beispieldaten</p>
+        <h2 id="demo-heading">Was kommt durch?</h2>
+        <p>Wähle eine Aktion für denselben Token. Die Simulation zeigt, wie Schleuse bei einer erlaubten oder gesperrten Anfrage reagiert.</p>
+      </div>
+      <div class="demo">
+        <div class="controls">
+          <fieldset>
+            <legend>Aktion auswählen</legend>
+            <label class="choice">
+              <input type="radio" name="scenario" value="allowed" checked>
+              <span><strong>Kundenliste lesen</strong><small>Freigegebene GET-Aktion</small></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="scenario" value="denied">
+              <span><strong>Bestellungen lesen</strong><small>GET-Aktion ohne Freigabe</small></span>
+            </label>
+          </fieldset>
+          <div class="actions">
+            <button class="button run" id="run" type="button">Testaufruf starten <span aria-hidden="true">→</span></button>
+            <button class="button reset" id="reset" type="button">Zurücksetzen</button>
+          </div>
+          <noscript><p>Aktiviere JavaScript, um die Simulation zu starten.</p></noscript>
+        </div>
+        <div class="output" aria-label="Simulierte Antwort">
+          <div class="output-bar">
+            <span class="eyebrow">Simulierte Antwort</span>
+            <span class="status" id="status" role="status">Bereit</span>
+          </div>
+          <code class="request" id="request">GET /actions/kunden-liste</code>
+          <pre class="response" id="response">Noch keine Anfrage ausgeführt.</pre>
+          <p class="result-note" id="result-note" aria-live="polite">Der Test läuft mit Beispieldaten in diesem Browser.</p>
+          <ol class="path" aria-label="Stationen des Aufrufs">
+            <li><span id="stage-client">Client</span></li>
+            <li><span id="stage-gateway">Schleuse</span></li>
+            <li><span id="stage-provider">Anbieter-API</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap details" id="prinzip" aria-labelledby="prinzip-heading">
+      <div class="intro">
+        <p class="eyebrow">Das Prinzip</p>
+        <h2 id="prinzip-heading">Eine Aktion. Eine Freigabe.</h2>
+      </div>
+      <div class="steps">
+        <article class="step"><p class="eyebrow">01 · Verbinden</p><h3>Ziel hinterlegen</h3><p>Die Verwaltung speichert den Anbieter-Schlüssel verschlüsselt und legt Ziel, Methode, Pfad und erlaubte Eingaben fest.</p></article>
+        <article class="step"><p class="eyebrow">02 · Freigeben</p><h3>Token ausstellen</h3><p>Ein Token erhält genau die Aktionen eines Kunden – unbegrenzt oder befristet, jederzeit widerrufbar.</p></article>
+        <article class="step"><p class="eyebrow">03 · Ausführen</p><h3>Aufruf vermitteln</h3><p>Schleuse prüft Token, Freigabe und Eingaben. Erst beim Weiterleiten setzt der Gateway den Anbieter-Schlüssel ein.</p></article>
+      </div>
+    </section>
+
+    <section class="wrap block faq" aria-labelledby="faq-heading">
+      <div class="intro"><p class="eyebrow">Fragen</p><h2 id="faq-heading">Kurz erklärt.</h2></div>
+        <details><summary>Brauche ich einen Ninox-API-Schlüssel?</summary><p>Nur wenn Make, n8n oder ein Skript auf Ninox zugreifen soll. Ruft Ninox selbst eine fremde API auf, kennt Ninox nur den Schleuse-Token; den Schlüssel der Ziel-API trägst du in Schleuse ein.</p></details>
+        <details><summary>Wie lange gilt ein Token?</summary><p>Standard ist unbegrenzt bis zum Widerruf. Du kannst auch eine Laufzeit in Tagen wählen; bei weniger als 30 Tagen fragt Schleuse nach, ob das gewollt ist. Ein Widerruf wirkt sofort.</p></details>
+        <details><summary>Was sieht jemand, der das Ninox-Skript lesen kann?</summary><p>Den Schleuse-Token – nicht den API-Schlüssel. Der Token erlaubt nur die freigegebenen Aktionen eines Kunden, mit festen Zielen und geprüften Eingaben.</p></details>
+        <details><summary>Muss ich am Server etwas einstellen?</summary><p>Nach der Installation mit Docker Compose nicht. Verbindungen, Aktionen, Tests und Tokens verwaltest du in der Admin-Oberfläche.</p></details>
+        <details><summary>Was geht noch nicht?</summary><p>Automatische OAuth-Erneuerung (Google, Microsoft 365), Datei-Uploads und -Downloads, Streaming sowie Antworten über 2 MiB oder 30 Sekunden.</p></details>
+    </section>
+
+    <section class="install" id="installation" aria-labelledby="install-heading">
+      <div class="wrap install-grid">
+        <div class="install-copy">
+          <p class="eyebrow">Selbst hosten · Version 0.3</p>
+          <h2 id="install-heading">Auf deinem Server.</h2>
+          <p>Starte den Gateway mit Docker Compose auf einem Linux-Server. Der Installer prüft zuerst die freien Ports. Danach läuft alles über die Admin-Oberfläche: Vorlagen, Tests, Tokens und Diagnose.</p>
+          <div class="actions" data-repo-link hidden><a class="button run" data-docs-link>Installationsanleitung auf GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+        <pre class="terminal"><code><span class="comment"># Im entpackten Projektordner</span>
+./install-server.sh --plan --show-used
+./install-server.sh --prepare
+./install-server.sh --install</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap foot"><small>Schleuse · API-Gateway · Version 0.3 · GPL v3</small><nav class="foot-links" aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="#start">Nach oben <span aria-hidden="true">↑</span></a></nav></div></footer>
+
+  <script>
+    const scenarios = {
+      allowed: {
+        request: "GET /actions/kunden-liste",
+        status: "200 OK",
+        response: { kunden: [{ id: "demo-01", name: "Beispiel & Co." }] },
+        note: "Freigabe gültig. Schleuse leitet die Anfrage an die Beispiel-API weiter.",
+        stages: ["Client · gesendet", "Schleuse · erlaubt", "Anbieter-API · erreicht"],
+        states: ["passed", "passed", "passed"],
+      },
+      denied: {
+        request: "GET /actions/bestellungen-liste",
+        status: "403 Verboten",
+        response: { error: "Diese Aktion ist nicht freigegeben." },
+        note: "Schleuse stoppt die Anfrage vor der Anbieter-API.",
+        stages: ["Client · gesendet", "Schleuse · gesperrt", "Anbieter-API · übersprungen"],
+        states: ["passed", "stopped", "skipped"],
+      },
+    };
+    const radios = document.querySelectorAll('input[name="scenario"]');
+    const request = document.querySelector("#request");
+    const status = document.querySelector("#status");
+    const response = document.querySelector("#response");
+    const note = document.querySelector("#result-note");
+    const stages = ["client", "gateway", "provider"].map(name => document.querySelector(`#stage-${name}`));
+    const stageLabels = ["Client", "Schleuse", "Anbieter-API"];
+
+    function renderDemo(run) {
+      const key = document.querySelector('input[name="scenario"]:checked').value;
+      const scenario = scenarios[key];
+      request.textContent = scenario.request;
+      status.textContent = run ? scenario.status : "Bereit";
+      status.dataset.state = run ? key : "idle";
+      response.textContent = run ? JSON.stringify(scenario.response, null, 2) : "Noch keine Anfrage ausgeführt.";
+      note.textContent = run ? scenario.note : "Der Test läuft mit Beispieldaten in diesem Browser.";
+      stages.forEach((stage, index) => {
+        stage.textContent = run ? scenario.stages[index] : stageLabels[index];
+        stage.dataset.state = run ? scenario.states[index] : "idle";
+      });
+    }
+
+    radios.forEach(radio => radio.addEventListener("change", () => renderDemo(false)));
+    document.querySelector("#run").addEventListener("click", () => renderDemo(true));
+    document.querySelector("#reset").addEventListener("click", () => {
+      radios[0].checked = true;
+      renderDemo(false);
+      radios[0].focus();
+    });
+    renderDemo(false);
+
+    const repository = document.documentElement.dataset.repositoryUrl.trim().replace(/\/$/, "");
+    if (/^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9_.-]+$/.test(repository)) {
+      document.querySelectorAll("[data-repo-link]").forEach(element => {
+        if (element instanceof HTMLAnchorElement) element.href = repository;
+        element.hidden = false;
+      });
+      document.querySelector("[data-docs-link]").href = `${repository}/blob/main/docs/INSTALLATION.md`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "id": "make",
+  "name": "Make (Webhook)",
+  "category": "Automatisierung",
+  "description": "Daten aus Ninox oder einem Skript an ein Make-Szenario senden. Der Webhook bleibt mit einem API-Schlüssel geschützt.",
+  "status": "doku",
+  "connection": {
+    "url": "https://hook.{REGION}.make.com/{WEBHOOK_ID}",
+    "url_hint": "",
+    "secret_label": "API-Schlüssel",
+    "headers": [],
+    "auth": "header",
+    "header": "x-make-apikey",
+    "prefix": ""
+  },
+  "help": "In Make im Modul „Custom webhook“ einen API-Schlüssel hinterlegen (Header x-make-apikey). Die Region (eu1, eu2, us1 …) steht in der Webhook-Adresse. Make antwortet standardmäßig mit „Accepted“; Schleuse gibt das als {\"text\": \"Accepted\"} zurück.",
+  "docs": "https://help.make.com/webhooks",
+  "actions": [
+    {
+      "name": "Daten senden",
+      "slug": "make-senden",
+      "method": "POST",
+      "path": "/",
+      "query": [],
+      "fields": [
+        "name",
+        "email",
+        "nachricht"
+      ],
+      "body_format": "",
+      "note": "Feldnamen an dein Szenario anpassen."
+    }
+  ]
+}

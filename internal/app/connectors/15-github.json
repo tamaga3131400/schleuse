@@ -1,0 +1,64 @@
+{
+  "id": "github",
+  "name": "GitHub",
+  "category": "Entwicklung",
+  "description": "Repository-Daten und Issues lesen, Issues anlegen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://api.github.com",
+    "url_hint": "",
+    "secret_label": "Personal Access Token",
+    "headers": [
+      {
+        "name": "X-GitHub-Api-Version",
+        "value": "2022-11-28"
+      }
+    ],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "Fine-grained Personal Access Token nur für das benötigte Repository: Metadata (lesen) und für Issues Issues (lesen/schreiben).",
+  "docs": "https://docs.github.com/en/rest",
+  "actions": [
+    {
+      "name": "Repository lesen",
+      "slug": "github-repo",
+      "method": "GET",
+      "path": "/repos/{OWNER}/{REPO}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Issues lesen",
+      "slug": "github-issues",
+      "method": "GET",
+      "path": "/repos/{OWNER}/{REPO}/issues",
+      "query": [
+        "state",
+        "per_page",
+        "page",
+        "labels"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Issue anlegen",
+      "slug": "github-issue-anlegen",
+      "method": "POST",
+      "path": "/repos/{OWNER}/{REPO}/issues",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "title": "{{titel}}",
+        "body": "{{text}}"
+      }
+    }
+  ]
+}

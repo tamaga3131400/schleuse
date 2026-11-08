@@ -1,0 +1,74 @@
+{
+  "id": "woocommerce",
+  "name": "WooCommerce",
+  "category": "Shop & Website",
+  "description": "Bestellungen und Produkte lesen, Bestellstatus ändern.",
+  "status": "doku",
+  "connection": {
+    "url": "https://{SHOP_DOMAIN}/wp-json/wc/v3",
+    "url_hint": "",
+    "secret_label": "API-Schlüssel",
+    "headers": [],
+    "auth": "basic",
+    "header": "Authorization",
+    "prefix": "Basic "
+  },
+  "help": "In WooCommerce unter Einstellungen → Erweitert → REST-API einen Schlüssel anlegen (Lesen oder Lesen/Schreiben). Consumer Key ist der Benutzername, Consumer Secret das Passwort.",
+  "docs": "https://woocommerce.github.io/woocommerce-rest-api-docs/",
+  "actions": [
+    {
+      "name": "Bestellungen lesen",
+      "slug": "woo-bestellungen",
+      "method": "GET",
+      "path": "/orders",
+      "query": [
+        "status",
+        "per_page",
+        "page",
+        "after",
+        "search"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Bestellung lesen",
+      "slug": "woo-bestellung",
+      "method": "GET",
+      "path": "/orders/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Bestellstatus ändern",
+      "slug": "woo-status",
+      "method": "PUT",
+      "path": "/orders/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "status": "{{status}}"
+      }
+    },
+    {
+      "name": "Produkte lesen",
+      "slug": "woo-produkte",
+      "method": "GET",
+      "path": "/products",
+      "query": [
+        "per_page",
+        "page",
+        "search",
+        "sku"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "wordpress-org",
+  "name": "WordPress.org (Testquelle)",
+  "category": "Zum Ausprobieren",
+  "description": "Öffentliche News-API von WordPress.org. Ideal für den ersten Test ohne eigenes Konto.",
+  "status": "getestet",
+  "connection": {
+    "url": "https://wordpress.org/news/wp-json/wp/v2",
+    "url_hint": "",
+    "secret_label": "API-Schlüssel",
+    "headers": [],
+    "auth": "none",
+    "header": "",
+    "prefix": ""
+  },
+  "help": "Kein Schlüssel nötig. Der Client braucht trotzdem einen Schleuse-Token.",
+  "docs": "https://developer.wordpress.org/rest-api/reference/posts/",
+  "actions": [
+    {
+      "name": "News-Beiträge lesen",
+      "slug": "wp-news",
+      "method": "GET",
+      "path": "/posts?per_page=5&_fields=id,date,link,title",
+      "query": [
+        "page",
+        "search"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    }
+  ]
+}

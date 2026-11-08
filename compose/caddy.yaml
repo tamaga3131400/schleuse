@@ -1,0 +1,18 @@
+# Optional: nur starten, wenn 80/443 auf diesem Host frei sind.
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment:
+      GATEWAY_DOMAIN: ${GATEWAY_DOMAIN:?GATEWAY_DOMAIN auf die eigene API-Domain setzen}
+    volumes:
+      - ./compose/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      gateway:
+        condition: service_healthy
+volumes:
+  caddy-data:
+  caddy-config:

@@ -1,0 +1,59 @@
+{
+  "id": "wordpress",
+  "name": "WordPress (eigene Website)",
+  "category": "Shop & Website",
+  "description": "Beiträge der eigenen Website lesen und Entwürfe anlegen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://{DOMAIN}/wp-json/wp/v2",
+    "url_hint": "",
+    "secret_label": "API-Schlüssel",
+    "headers": [],
+    "auth": "basic",
+    "header": "Authorization",
+    "prefix": "Basic "
+  },
+  "help": "In WordPress unter Benutzer → Profil → Anwendungspasswörter ein Passwort erzeugen. Am besten einen eigenen Benutzer mit der Rolle „Autor“ verwenden.",
+  "docs": "https://developer.wordpress.org/rest-api/reference/posts/",
+  "actions": [
+    {
+      "name": "Beiträge lesen",
+      "slug": "wp-beitraege",
+      "method": "GET",
+      "path": "/posts",
+      "query": [
+        "per_page",
+        "page",
+        "search"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Beitrag lesen",
+      "slug": "wp-beitrag",
+      "method": "GET",
+      "path": "/posts/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Entwurf anlegen",
+      "slug": "wp-entwurf",
+      "method": "POST",
+      "path": "/posts",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "title": "{{titel}}",
+        "content": "{{inhalt}}",
+        "status": "draft"
+      }
+    }
+  ]
+}

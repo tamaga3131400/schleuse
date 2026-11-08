@@ -1,0 +1,58 @@
+{
+  "id": "sevdesk",
+  "name": "sevDesk",
+  "category": "Buchhaltung & Rechnungen",
+  "description": "Kontakte und Rechnungen lesen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://my.sevdesk.de/api/v1",
+    "url_hint": "",
+    "secret_label": "API-Token",
+    "headers": [],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": ""
+  },
+  "help": "API-Token in sevDesk unter Einstellungen → Benutzer → API-Token kopieren. sevDesk erwartet ihn ohne Präfix im Header Authorization.",
+  "docs": "https://api.sevdesk.de/",
+  "actions": [
+    {
+      "name": "Kontakte lesen",
+      "slug": "sevdesk-kontakte",
+      "method": "GET",
+      "path": "/Contact",
+      "query": [
+        "limit",
+        "offset",
+        "name"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Rechnungen lesen",
+      "slug": "sevdesk-rechnungen",
+      "method": "GET",
+      "path": "/Invoice",
+      "query": [
+        "status",
+        "limit",
+        "offset"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Rechnung lesen",
+      "slug": "sevdesk-rechnung",
+      "method": "GET",
+      "path": "/Invoice/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    }
+  ]
+}

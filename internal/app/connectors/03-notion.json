@@ -1,0 +1,74 @@
+{
+  "id": "notion",
+  "name": "Notion",
+  "category": "Datenbank & Low-Code",
+  "description": "Notion-Datenbanken abfragen und Einträge anlegen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://api.notion.com/v1",
+    "url_hint": "",
+    "secret_label": "Integration-Secret",
+    "headers": [
+      {
+        "name": "Notion-Version",
+        "value": "2022-06-28"
+      }
+    ],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "Interne Integration unter notion.so/profile/integrations anlegen, Secret kopieren und die Integration in der Datenbank über „Verbindungen“ freigeben.",
+  "docs": "https://developers.notion.com/reference/intro",
+  "actions": [
+    {
+      "name": "Datenbank abfragen",
+      "slug": "notion-abfragen",
+      "method": "POST",
+      "path": "/databases/{DATABASE_ID}/query",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "page_size": 20
+      }
+    },
+    {
+      "name": "Seite lesen",
+      "slug": "notion-seite",
+      "method": "GET",
+      "path": "/pages/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Eintrag anlegen",
+      "slug": "notion-anlegen",
+      "method": "POST",
+      "path": "/pages",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "Eigenschaftsnamen an deine Datenbank anpassen.",
+      "body": {
+        "parent": {
+          "database_id": "{DATABASE_ID}"
+        },
+        "properties": {
+          "Name": {
+            "title": [
+              {
+                "text": {
+                  "content": "{{titel}}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

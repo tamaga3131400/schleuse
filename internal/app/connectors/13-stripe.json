@@ -1,0 +1,67 @@
+{
+  "id": "stripe",
+  "name": "Stripe",
+  "category": "Zahlungen",
+  "description": "Kunden und Kontostand lesen, Kunden anlegen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://api.stripe.com/v1",
+    "url_hint": "",
+    "secret_label": "Eingeschränkter Schlüssel",
+    "headers": [],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "Eingeschränkten Schlüssel (rk_…) unter Entwickler → API-Schlüssel anlegen, nur mit den benötigten Rechten (z. B. Customers: Read). Stripe erwartet Schreibaufrufe als Formular – das übernimmt Schleuse.",
+  "docs": "https://docs.stripe.com/api",
+  "actions": [
+    {
+      "name": "Kunden lesen",
+      "slug": "stripe-kunden",
+      "method": "GET",
+      "path": "/customers",
+      "query": [
+        "limit",
+        "starting_after",
+        "email"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Kunde lesen",
+      "slug": "stripe-kunde",
+      "method": "GET",
+      "path": "/customers/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Kontostand lesen",
+      "slug": "stripe-kontostand",
+      "method": "GET",
+      "path": "/balance",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Kunde anlegen",
+      "slug": "stripe-kunde-anlegen",
+      "method": "POST",
+      "path": "/customers",
+      "query": [],
+      "fields": [
+        "email",
+        "name"
+      ],
+      "body_format": "form",
+      "note": ""
+    }
+  ]
+}

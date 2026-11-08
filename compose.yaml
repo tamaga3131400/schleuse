@@ -1,0 +1,31 @@
+name: schleuse-pilot
+services:
+  gateway:
+    build: .
+    image: schleuse-gateway:local
+    restart: unless-stopped
+    environment:
+      GATEWAY_DATA: /data
+      GATEWAY_ADMIN_ADDR: 0.0.0.0:9090
+      GATEWAY_API_ADDR: 0.0.0.0:8080
+      GATEWAY_ADMIN_ORIGIN: ${GATEWAY_ADMIN_ORIGIN:-http://127.0.0.1:19090}
+      GATEWAY_PUBLIC_URL: ${GATEWAY_PUBLIC_URL:-http://127.0.0.1:18080}
+    ports:
+      - "127.0.0.1:${GATEWAY_ADMIN_PORT:-19090}:9090"
+      - "127.0.0.1:${GATEWAY_API_PORT:-18080}:8080"
+    volumes:
+      - gateway-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    cpus: 1
+    healthcheck:
+      test: [CMD, /gateway, --healthcheck]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+volumes:
+  gateway-data:

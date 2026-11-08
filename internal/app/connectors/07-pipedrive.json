@@ -1,0 +1,80 @@
+{
+  "id": "pipedrive",
+  "name": "Pipedrive",
+  "category": "CRM & Vertrieb",
+  "description": "Personen und Deals lesen, Personen suchen und anlegen (API v2).",
+  "status": "doku",
+  "connection": {
+    "url": "https://api.pipedrive.com/api/v2",
+    "url_hint": "",
+    "secret_label": "API-Token",
+    "headers": [],
+    "auth": "header",
+    "header": "x-api-token",
+    "prefix": ""
+  },
+  "help": "Persönlichen API-Token in Pipedrive unter Persönliche Einstellungen → API kopieren.",
+  "docs": "https://developers.pipedrive.com/docs/api/v1",
+  "actions": [
+    {
+      "name": "Personen lesen",
+      "slug": "pipedrive-personen",
+      "method": "GET",
+      "path": "/persons",
+      "query": [
+        "limit",
+        "cursor"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Person suchen",
+      "slug": "pipedrive-suchen",
+      "method": "GET",
+      "path": "/persons/search",
+      "query": [
+        "term",
+        "fields",
+        "exact_match"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Deals lesen",
+      "slug": "pipedrive-deals",
+      "method": "GET",
+      "path": "/deals",
+      "query": [
+        "limit",
+        "cursor",
+        "status"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Person anlegen",
+      "slug": "pipedrive-anlegen",
+      "method": "POST",
+      "path": "/persons",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "name": "{{name}}",
+        "emails": [
+          {
+            "value": "{{email}}",
+            "primary": true
+          }
+        ]
+      }
+    }
+  ]
+}

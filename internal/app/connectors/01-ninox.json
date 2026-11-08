@@ -1,0 +1,89 @@
+{
+  "id": "ninox",
+  "name": "Ninox",
+  "category": "Datenbank & Low-Code",
+  "description": "Datensätze in Ninox Cloud oder Ninox On-Premise lesen, anlegen und ändern.",
+  "status": "getestet",
+  "connection": {
+    "url": "https://api.ninox.com/v1/teams/{TEAM_ID}/databases/{DATABASE_ID}",
+    "url_hint": "Ninox On-Premise: https://DEIN-NINOX-SERVER/v1/teams/{TEAM_ID}/databases/{DATABASE_ID}. Team- und Datenbank-ID stehen in der Browser-Adresse von Ninox.",
+    "secret_label": "API-Schlüssel",
+    "headers": [],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "API-Schlüssel in Ninox unter Einstellungen → Integrationen erzeugen. Der Schlüssel öffnet alle Datenbanken des Kontos – darum gehört er in Schleuse und nie in ein Skript. Tabellen-IDs (A, B, …) liefert die Aktion „Tabellen auflisten“.",
+  "docs": "https://docs.ninox.com/en/api/introduction",
+  "actions": [
+    {
+      "name": "Tabellen auflisten",
+      "slug": "ninox-tabellen",
+      "method": "GET",
+      "path": "/tables",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Datensätze lesen",
+      "slug": "ninox-datensaetze",
+      "method": "GET",
+      "path": "/tables/{TABLE_ID}/records",
+      "query": [
+        "perPage",
+        "page"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Datensatz lesen",
+      "slug": "ninox-datensatz",
+      "method": "GET",
+      "path": "/tables/{TABLE_ID}/records/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Datensatz anlegen",
+      "slug": "ninox-anlegen",
+      "method": "POST",
+      "path": "/tables/{TABLE_ID}/records",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "Feldnamen an deine Tabelle anpassen.",
+      "body": [
+        {
+          "fields": {
+            "Name": "{{name}}",
+            "E-Mail": "{{email}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Datensatz ändern",
+      "slug": "ninox-aendern",
+      "method": "POST",
+      "path": "/tables/{TABLE_ID}/records",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "Ninox ändert den Datensatz mit der übergebenen ID. Feldnamen anpassen.",
+      "body": [
+        {
+          "id": "{{id}}",
+          "fields": {
+            "Status": "{{status}}"
+          }
+        }
+      ]
+    }
+  ]
+}

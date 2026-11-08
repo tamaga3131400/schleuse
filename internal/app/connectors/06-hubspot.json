@@ -1,0 +1,94 @@
+{
+  "id": "hubspot",
+  "name": "HubSpot CRM",
+  "category": "CRM & Vertrieb",
+  "description": "Kontakte lesen, suchen und anlegen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://api.hubapi.com",
+    "url_hint": "",
+    "secret_label": "Zugriffstoken der privaten App",
+    "headers": [],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "Zugriffstoken einer privaten App in HubSpot anlegen (Einstellungen → Integrationen). Scopes: crm.objects.contacts.read und für das Anlegen crm.objects.contacts.write.",
+  "docs": "https://developers.hubspot.com/docs/api/crm/contacts",
+  "actions": [
+    {
+      "name": "Kontakte lesen",
+      "slug": "hubspot-kontakte",
+      "method": "GET",
+      "path": "/crm/v3/objects/contacts",
+      "query": [
+        "limit",
+        "after",
+        "properties"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Kontakt lesen",
+      "slug": "hubspot-kontakt",
+      "method": "GET",
+      "path": "/crm/v3/objects/contacts/{id}",
+      "query": [
+        "properties"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Kontakt per E-Mail suchen",
+      "slug": "hubspot-suchen",
+      "method": "POST",
+      "path": "/crm/v3/objects/contacts/search",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "filterGroups": [
+          {
+            "filters": [
+              {
+                "propertyName": "email",
+                "operator": "EQ",
+                "value": "{{email}}"
+              }
+            ]
+          }
+        ],
+        "properties": [
+          "email",
+          "firstname",
+          "lastname",
+          "company"
+        ],
+        "limit": 10
+      }
+    },
+    {
+      "name": "Kontakt anlegen",
+      "slug": "hubspot-anlegen",
+      "method": "POST",
+      "path": "/crm/v3/objects/contacts",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "properties": {
+          "email": "{{email}}",
+          "firstname": "{{vorname}}",
+          "lastname": "{{nachname}}",
+          "company": "{{firma}}"
+        }
+      }
+    }
+  ]
+}

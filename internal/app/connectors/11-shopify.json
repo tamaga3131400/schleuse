@@ -1,0 +1,49 @@
+{
+  "id": "shopify",
+  "name": "Shopify",
+  "category": "Shop & Website",
+  "description": "Bestellungen und Produkte über feste GraphQL-Abfragen lesen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://{SHOP}.myshopify.com/admin/api/2026-07",
+    "url_hint": "",
+    "secret_label": "Admin-API-Zugriffstoken",
+    "headers": [],
+    "auth": "header",
+    "header": "X-Shopify-Access-Token",
+    "prefix": ""
+  },
+  "help": "Admin-API-Zugriffstoken (shpat_…) einer eigenen App mit den Scopes read_orders und read_products. Die GraphQL-Abfrage liegt fest in Schleuse – der Client wählt keine eigene Operation.",
+  "docs": "https://shopify.dev/docs/api/admin-graphql/latest",
+  "actions": [
+    {
+      "name": "Letzte Bestellungen lesen",
+      "slug": "shopify-bestellungen",
+      "method": "POST",
+      "path": "/graphql.json",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "query": "{ orders(first: 20, reverse: true) { nodes { id name createdAt displayFinancialStatus displayFulfillmentStatus totalPriceSet { shopMoney { amount currencyCode } } } } }"
+      }
+    },
+    {
+      "name": "Produkte suchen",
+      "slug": "shopify-produkte",
+      "method": "POST",
+      "path": "/graphql.json",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "",
+      "body": {
+        "query": "query($q: String!) { products(first: 20, query: $q) { nodes { id title handle status totalInventory } } }",
+        "variables": {
+          "q": "{{suche}}"
+        }
+      }
+    }
+  ]
+}

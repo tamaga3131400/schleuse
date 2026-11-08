@@ -1,0 +1,34 @@
+{
+  "id": "n8n",
+  "name": "n8n (Webhook)",
+  "category": "Automatisierung",
+  "description": "Daten an einen n8n-Workflow senden. Geschützt per Header-Authentifizierung.",
+  "status": "doku",
+  "connection": {
+    "url": "https://{N8N_HOST}/webhook/{WEBHOOK_PATH}",
+    "url_hint": "",
+    "secret_label": "Wert des Headers X-Schleuse-Key",
+    "headers": [],
+    "auth": "header",
+    "header": "X-Schleuse-Key",
+    "prefix": ""
+  },
+  "help": "Im n8n-Webhook-Knoten Authentication = Header Auth wählen. Als Name X-Schleuse-Key und als Wert einen langen Zufallswert eintragen, denselben Wert hier als Schlüssel.",
+  "docs": "https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook/",
+  "actions": [
+    {
+      "name": "Daten senden",
+      "slug": "n8n-senden",
+      "method": "POST",
+      "path": "/",
+      "query": [],
+      "fields": [
+        "name",
+        "email",
+        "nachricht"
+      ],
+      "body_format": "",
+      "note": "Feldnamen an deinen Workflow anpassen."
+    }
+  ]
+}

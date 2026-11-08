@@ -1,0 +1,13 @@
+.cache
+.data*
+bin
+web/node_modules
+internal/ui/dist
+*.db*
+*.key
+install.env
+.install.lock
+setup-code
+dist
+**/__pycache__
+.release-private-markers

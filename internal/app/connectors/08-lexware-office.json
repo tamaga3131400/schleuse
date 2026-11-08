@@ -1,0 +1,68 @@
+{
+  "id": "lexware-office",
+  "name": "Lexware Office (lexoffice)",
+  "category": "Buchhaltung & Rechnungen",
+  "description": "Kontakte, offene Rechnungen und Belege lesen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://api.lexware.io/v1",
+    "url_hint": "",
+    "secret_label": "API-Schlüssel",
+    "headers": [],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "API-Schlüssel in Lexware Office unter Erweiterungen → Public API erzeugen. Die API erlaubt etwa zwei Aufrufe pro Sekunde.",
+  "docs": "https://developers.lexware.io/docs/",
+  "actions": [
+    {
+      "name": "Kontakte lesen",
+      "slug": "lexware-kontakte",
+      "method": "GET",
+      "path": "/contacts",
+      "query": [
+        "page",
+        "size",
+        "email",
+        "name"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Kontakt lesen",
+      "slug": "lexware-kontakt",
+      "method": "GET",
+      "path": "/contacts/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Offene Rechnungen lesen",
+      "slug": "lexware-offene-rechnungen",
+      "method": "GET",
+      "path": "/voucherlist?voucherType=invoice&voucherStatus=open",
+      "query": [
+        "page",
+        "size"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Rechnung lesen",
+      "slug": "lexware-rechnung",
+      "method": "GET",
+      "path": "/invoices/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    }
+  ]
+}

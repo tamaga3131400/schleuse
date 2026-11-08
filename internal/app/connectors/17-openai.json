@@ -1,0 +1,39 @@
+{
+  "id": "openai",
+  "name": "OpenAI",
+  "category": "KI",
+  "description": "Texte mit einem OpenAI-Modell erzeugen, ohne dass der API-Schlüssel im Client steht.",
+  "status": "doku",
+  "connection": {
+    "url": "https://api.openai.com/v1",
+    "url_hint": "",
+    "secret_label": "API-Schlüssel",
+    "headers": [],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "Projekt-API-Schlüssel unter platform.openai.com anlegen und ein Budget-Limit setzen. Schleuse wartet höchstens 30 Sekunden.",
+  "docs": "https://platform.openai.com/docs/api-reference/responses",
+  "actions": [
+    {
+      "name": "Text erzeugen",
+      "slug": "openai-text",
+      "method": "POST",
+      "path": "/responses",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "Modell und Anweisung nach Bedarf anpassen.",
+      "body": {
+        "model": "gpt-5-mini",
+        "reasoning": {
+          "effort": "low"
+        },
+        "max_output_tokens": 2048,
+        "instructions": "Antworte kurz und sachlich auf Deutsch.",
+        "input": "{{text}}"
+      }
+    }
+  ]
+}

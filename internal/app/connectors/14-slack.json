@@ -1,0 +1,34 @@
+{
+  "id": "slack",
+  "name": "Slack",
+  "category": "Kommunikation",
+  "description": "Nachrichten in einen festen Kanal senden.",
+  "status": "doku",
+  "connection": {
+    "url": "https://slack.com/api",
+    "url_hint": "",
+    "secret_label": "Bot-Token",
+    "headers": [],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "Slack-App unter api.slack.com/apps anlegen, Bot-Scope chat:write vergeben, App installieren, Bot-Token (xoxb-…) kopieren und den Bot in den Kanal einladen.",
+  "docs": "https://api.slack.com/methods/chat.postMessage",
+  "actions": [
+    {
+      "name": "Nachricht senden",
+      "slug": "slack-nachricht",
+      "method": "POST",
+      "path": "/chat.postMessage",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "Kanal-ID steht in Slack unter Kanaldetails.",
+      "body": {
+        "channel": "{CHANNEL_ID}",
+        "text": "{{text}}"
+      }
+    }
+  ]
+}

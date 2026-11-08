@@ -1,0 +1,59 @@
+{
+  "id": "airtable",
+  "name": "Airtable",
+  "category": "Datenbank & Low-Code",
+  "description": "Datensätze einer Airtable-Base lesen und anlegen.",
+  "status": "doku",
+  "connection": {
+    "url": "https://api.airtable.com/v0/{BASE_ID}",
+    "url_hint": "",
+    "secret_label": "Persönliches Zugriffstoken",
+    "headers": [],
+    "auth": "header",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "help": "Persönliches Zugriffstoken unter airtable.com/create/tokens anlegen: Scopes data.records:read (und data.records:write zum Anlegen), Zugriff nur auf diese Base.",
+  "docs": "https://airtable.com/developers/web/api/introduction",
+  "actions": [
+    {
+      "name": "Datensätze lesen",
+      "slug": "airtable-datensaetze",
+      "method": "GET",
+      "path": "/{TABLE_ID}",
+      "query": [
+        "pageSize",
+        "offset",
+        "view"
+      ],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Datensatz lesen",
+      "slug": "airtable-datensatz",
+      "method": "GET",
+      "path": "/{TABLE_ID}/{id}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": ""
+    },
+    {
+      "name": "Datensatz anlegen",
+      "slug": "airtable-anlegen",
+      "method": "POST",
+      "path": "/{TABLE_ID}",
+      "query": [],
+      "fields": [],
+      "body_format": "",
+      "note": "Feldnamen an deine Tabelle anpassen.",
+      "body": {
+        "fields": {
+          "Name": "{{name}}"
+        }
+      }
+    }
+  ]
+}
